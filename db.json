@@ -1,0 +1,56 @@
+{
+  "entretiens": [
+    {
+      "id": "ab66",
+      "prenom": "Daba",
+      "nom": "Gano",
+      "adresse": "Grand yoff",
+      "domaine": "RH",
+      "pourquoiChoix": "Passion",
+      "participants": "Fatimata Gano",
+      "presentationBref": "je suis passionée par l'informaiquee",
+      "presentationDetail": "Etudiante Faseg L3",
+      "commentVoyezDefarSci": "atteindre mes objectif",
+      "quAttendezDeDefarSci": "appronfondir mes competences en RH",
+      "atouts": "prie de parole en public",
+      "faiblesses": "travail en equipe",
+      "status": "complete",
+      "dateEntretien": "2025-09-23T17:10:12.866Z"
+    },
+    {
+      "id": "64b2",
+      "prenom": "Fatimata ",
+      "nom": "Ndiaye",
+      "adresse": "Grand yoff",
+      "domaine": "Bureautique",
+      "pourquoiChoix": "passion",
+      "participants": "Moussa Ndoye",
+      "presentationBref": "pasiionée par l'informatique",
+      "presentationDetail": "stagiaire en Bureautique",
+      "commentVoyezDefarSci": "atteindre mes objectif",
+      "quAttendezDeDefarSci": "avoir des competence dans le domaine du bureautiqe",
+      "atouts": "probleme de prise de parole en public",
+      "faiblesses": "travail en equipe",
+      "status": "complete",
+      "dateEntretien": "2025-09-23T17:19:13.770Z"
+    }
+  ],
+  "brouillons": [
+    {
+      "id": "9dd2",
+      "prenom": "",
+      "nom": "",
+      "adresse": "",
+      "domaine": "",
+      "pourquoiChoix": "",
+      "participants": "",
+      "presentationBref": "",
+      "presentationDetail": "",
+      "commentVoyezDefarSci": "",
+      "quAttendezDeDefarSci": "",
+      "atouts": "",
+      "faiblesses": "",
+      "dateEntretien": ""
+    }
+  ]
+}
