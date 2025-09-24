@@ -8,10 +8,19 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
       <div className="container">
-        <img src="" alt="" />
+        <div className="d-flex flex-column align-items-center me-3">
+          <img
+            src="public/images/images-removebg-preview.png"
+            alt="logo"
+            style={{ height: "70px", width: "70px" }}
+          />
+          <h3 className="fw-bold m-0" style={{ fontSize: "17px",color:"#7FB3FF" }}>
+            DefarSci
+          </h3>
+        </div>
         {/* Logo */}
         <Link className="navbar-brand d-flex align-items-center fw-bold" to="/">
-          <BarChart2 size={22} className="me-2 text-warning" />
+          <BarChart2 size={22} className="me-1 " style={{color:"#84ADDB"}} />
           Gestion Entretien
         </Link>
 

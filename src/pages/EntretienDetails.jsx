@@ -23,30 +23,61 @@ const EntretienDetails = () => {
     }
   }, [entretien, id]);
 
-  const handleDownloadPDF = () => {
-    if (!entretien) return;
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text(`Entretien de ${entretien.nom} ${entretien.prenom}`, 20, 20);
+ const handleDownloadPDF = () => {
+  if (!entretien) return;
+  const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.getWidth();
 
-    let y = 30;
-    Object.entries(entretien).forEach(([key, value]) => {
-      doc.setFontSize(12);
-      doc.text(`${key}: ${value}`, 20, y);
-      y += 10;
+  doc.setFontSize(16);
+  doc.setTextColor(65, 83, 121); // couleur titre similaire header
+  doc.text(`Entretien de ${entretien.nom} ${entretien.prenom}`, pageWidth / 2, 20, { align: "center" });
+
+  let y = 30;
+  const cardHeight = 15;
+  const cardSpacing = 10;
+  const leftMargin = 20;
+  const rightMargin = 20;
+  const cardWidth = pageWidth - leftMargin - rightMargin;
+
+  Object.entries(entretien)
+    .filter(([key]) => key !== "updated_at")
+    .forEach(([key, value]) => {
+      // Card background
+      doc.setFillColor(245, 245, 245); // couleur fond similaire
+      doc.roundedRect(leftMargin, y, cardWidth, cardHeight, 2, 2, "F");
+
+      // Card header
+      doc.setFillColor(65, 83, 121); // bleu header
+      doc.rect(leftMargin, y, cardWidth, 6, "F");
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(10);
+      doc.text(key.replace(/_/g, " "), leftMargin + 2, y + 4);
+
+      // Card body
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(10);
+      doc.text(value?.toString() || "", leftMargin + 2, y + 12);
+
+      y += cardHeight + cardSpacing;
+
+      // Nouvelle page si trop bas
+      if (y > 270) {
+        doc.addPage();
+        y = 20;
+      }
     });
 
-    doc.save(`entretien_${entretien.id}.pdf`);
-  };
+  doc.save(`entretien_${entretien.id}.pdf`);
+};
 
   if (!entretien) return <div className="container mt-5">Chargement...</div>;
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4 fs-2 fw-bold text-dark" style={{ color: "#212529" }}>
+      <h2 className="mb-2 fs-2 fw-bold text-dark" style={{paddingTop:"50px"}}>
         Entretien de {entretien.nom} {entretien.prenom}
       </h2>
-      <div className="row g-3">
+      <div className="row g-3 mt-3">
         {Object.entries(entretien)
           .filter(([key]) => key !== "updated_at") // ❌ enlève updated_at
           .map(([key, value]) => (

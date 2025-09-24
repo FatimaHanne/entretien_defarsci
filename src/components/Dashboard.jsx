@@ -10,24 +10,16 @@ const Dashboard = () => {
       }}
     >
       {/* Header */}
-      <header className="bg-white border-bottom shadow-sm py-3">
-        <div className="container d-flex justify-content-between align-items-center">
-          <div>
-            <h1 className="h3 fw-bold mb-0 text-primary">Dashboard</h1>
-            <small className="text-muted">
-              Bienvenue, gérez vos entretiens et employés
-            </small>
-          </div>
-          <div className="d-flex gap-2">
-            <button className="btn btn-outline-secondary rounded-circle">
-              <Bell size={18} />
-            </button>
-            <button className="btn btn-outline-secondary rounded-circle">
-              <Settings size={18} />
-            </button>
-          </div>
-        </div>
-      </header>
+    <header className="bg-white border-bottom shadow-sm py-3" style={{ marginTop: "90px" }}>
+  <div className="container d-flex justify-content-between align-items-center">
+    <div>
+      <h1 className="text-muted fw-bold">
+        Bienvenue, gérez vos entretiens et employés
+      </h1>
+    </div>
+  </div>
+</header>
+
 
       {/* Main */}
       <main className="container flex-grow-1 d-flex flex-column justify-content-center">
@@ -37,10 +29,11 @@ const Dashboard = () => {
             <div className="card shadow-lg border-0 h-100">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <div className="bg-primary text-white p-3 rounded">
+                  <div className="bg-primary text-white p-3 
+                  ">
                     <Calendar size={24} />
                   </div>
-                  <span className="badge bg-primary-subtle text-primary fw-bold">
+                  <span className="badge bg-primary text-white fw-bold">
                     +5000 entretiens
                   </span>
                 </div>

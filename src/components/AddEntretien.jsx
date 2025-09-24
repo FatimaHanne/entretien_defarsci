@@ -159,7 +159,7 @@ const AddEntretien = () => {
       </ToastContainer>
 
       <div className="container">
-        <div className="card shadow p-4">
+        <div className="card shadow p-4 mt-5">
           <h2 className="h4 mb-4">Nouveau candidat</h2>
 
           <div className="row">

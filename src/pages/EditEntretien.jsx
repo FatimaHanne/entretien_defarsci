@@ -47,7 +47,7 @@ const EditEntretien = () => {
     <div className="container mt-5">
       {/* Bouton retour */}
       <button
-        className="btn mb-4"
+        className="btn mt-5"
         style={{ backgroundColor: "#6c757d", color: "#fff" }}
         onClick={() => navigate("/list-entretien")}
       >
@@ -55,13 +55,13 @@ const EditEntretien = () => {
       </button>
 
       {/* Titre */}
-      <h2 className="mb-4 fw-bold text-dark">
+      <h2 className="mt-5 fw-bold text-dark">
         ✏️ Modifier l’entretien de {entretien.nom} {entretien.prenom}
       </h2>
 
       {/* Formulaire dans une card */}
       <div
-        className="card shadow-sm border-0"
+        className="card shadow-sm border-0 mt-3"
         style={{ borderRadius: "12px", backgroundColor: "#fdfdfd" }}
       >
         <div className="card-body p-4">

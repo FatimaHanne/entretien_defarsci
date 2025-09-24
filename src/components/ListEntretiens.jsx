@@ -108,7 +108,7 @@ const ListEntretiens = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">Liste des Entretiens</h2>
+      <h2 className="mb-2" style={{paddingTop:"40px"}}>Liste des Entretiens</h2>
 
       {/* Filtres */}
       <div className="d-flex flex-nowrap align-items-center gap-3 p-3 bg-light rounded shadow-sm mb-4 overflow-auto">
