@@ -160,7 +160,7 @@ const AddEntretien = () => {
 
       <div className="container">
         <div className="card shadow p-4 mt-5">
-          <h2 className="h4 mb-4">Nouveau candidat</h2>
+          <h2 className="h4 mb-5">Nouveau candidat</h2>
 
           <div className="row">
             <div className="col-lg-8">
