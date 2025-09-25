@@ -11,9 +11,9 @@ const Login = () => {
     e.preventDefault();
 
     // Vérification simple (à remplacer par un vrai backend)
-    if (email === "g" && password === "admin") {
+    if (email === "defarsci2025@gmail.com" && password === "admin") {
       localStorage.setItem("auth", "true"); // sauvegarde session
-      navigate("/Dashboard"); // redirection
+      navigate("/dashboard"); // redirection
     } else {
       setError("Email ou mot de passe incorrect !");
     }
