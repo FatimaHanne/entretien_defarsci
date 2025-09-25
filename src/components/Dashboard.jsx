@@ -1,5 +1,5 @@
 import React from "react";
-import { Users, Calendar, FileText, Bell, Settings } from "lucide-react";
+import { Users, Calendar, FileText} from "lucide-react";
 
 const Dashboard = () => {
   return (
