@@ -38,6 +38,7 @@ const ListEntretiens = () => {
     axios
       .get("http://entretiens.defarsci.fr/api/entretiens")
       .then((res) => {
+        console.log(res.data); // <--- à vérifier
         // Vérifie la structure de la réponse
         const liste = Array.isArray(res.data)
           ? res.data
@@ -199,16 +200,13 @@ const ListEntretiens = () => {
           {filtered.length > 0 ? (
             filtered.map((entretien) => (
               <tr key={entretien.id}>
-                <td>{entretien.id}</td>
-                <td>{entretien.nom}</td>
-                <td>{entretien.prenom}</td>
-                <td>
-                  {entretien.created_at
-                    ? new Date(entretien.created_at).toLocaleDateString(
-                        "fr-FR",
-                        { day: "2-digit", month: "2-digit", year: "numeric" }
-                      )
-                    : ""}
+              <td>{entretien.id}</td>
+              <td>{entretien.nom || entretien.last_name}</td>
+              <td>{entretien.prenom || entretien.first_name}</td>
+              <td>
+                {entretien.created_at || entretien.date_entretien
+                  ? new Date(entretien.created_at || entretien.date_entretien).toLocaleDateString("fr-FR")
+                  : ""}
                 </td>
                 <td className="d-flex gap-2">
                   <button
