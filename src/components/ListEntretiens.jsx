@@ -7,7 +7,7 @@ const normalizeDomain = (str) => {
   if (!str) return "";
   return str
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // supprime accents
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
@@ -36,17 +36,20 @@ const ListEntretiens = () => {
   // --- Récupération des entretiens et domaines depuis API ---
   useEffect(() => {
     axios
-      .get("http://entretiens.defarsci.fr/api/entretiens")
+      .get("https://entretiens.defarsci.fr/api/entretiens") // HTTPS pour Netlify
       .then((res) => {
-        console.log(res.data); // <--- à vérifier
-        // Vérifie la structure de la réponse
+        console.log("Réponse API:", res.data);
+
         const liste = Array.isArray(res.data)
           ? res.data
           : res.data.entretiens || [];
+
+        console.log("Liste traitée:", liste);
+
         setEntretiens(liste);
         setFiltered(liste);
 
-        // Crée la liste unique de domaines
+        // Création des domaines uniques
         const domainMap = new Map();
         liste.forEach((e) => {
           if (e.domaine) {
@@ -64,9 +67,7 @@ const ListEntretiens = () => {
           }))
         );
       })
-      .catch((err) => {
-        console.error("Erreur récupération entretiens :", err);
-      });
+      .catch((err) => console.error("Erreur récupération entretiens :", err));
   }, []);
 
   // --- Application des filtres ---
@@ -127,9 +128,7 @@ const ListEntretiens = () => {
           className="form-select"
           style={{ minWidth: "150px" }}
           value={filters.domaine}
-          onChange={(e) =>
-            setFilters({ ...filters, domaine: e.target.value })
-          }
+          onChange={(e) => setFilters({ ...filters, domaine: e.target.value })}
         >
           <option value="">Domaine</option>
           {domains.map((d) => (
@@ -143,9 +142,7 @@ const ListEntretiens = () => {
           className="form-select"
           style={{ minWidth: "120px" }}
           value={filters.maladie}
-          onChange={(e) =>
-            setFilters({ ...filters, maladie: e.target.value })
-          }
+          onChange={(e) => setFilters({ ...filters, maladie: e.target.value })}
         >
           <option value="">Maladie</option>
           <option value="oui">Oui</option>
@@ -157,9 +154,7 @@ const ListEntretiens = () => {
           className="form-control"
           style={{ minWidth: "150px" }}
           value={filters.dateEntretien}
-          onChange={(e) =>
-            setFilters({ ...filters, dateEntretien: e.target.value })
-          }
+          onChange={(e) => setFilters({ ...filters, dateEntretien: e.target.value })}
         />
 
         <input
@@ -168,9 +163,7 @@ const ListEntretiens = () => {
           style={{ minWidth: "150px" }}
           placeholder="Prénom"
           value={filters.prenom}
-          onChange={(e) =>
-            setFilters({ ...filters, prenom: e.target.value })
-          }
+          onChange={(e) => setFilters({ ...filters, prenom: e.target.value })}
         />
 
         <input
@@ -179,9 +172,7 @@ const ListEntretiens = () => {
           style={{ minWidth: "150px" }}
           placeholder="Nom"
           value={filters.nom}
-          onChange={(e) =>
-            setFilters({ ...filters, nom: e.target.value })
-          }
+          onChange={(e) => setFilters({ ...filters, nom: e.target.value })}
         />
       </div>
 
@@ -200,13 +191,13 @@ const ListEntretiens = () => {
           {filtered.length > 0 ? (
             filtered.map((entretien) => (
               <tr key={entretien.id}>
-              <td>{entretien.id}</td>
-              <td>{entretien.nom || entretien.last_name}</td>
-              <td>{entretien.prenom || entretien.first_name}</td>
-              <td>
-                {entretien.created_at || entretien.date_entretien
-                  ? new Date(entretien.created_at || entretien.date_entretien).toLocaleDateString("fr-FR")
-                  : ""}
+                <td>{entretien.id}</td>
+                <td>{entretien.nom}</td>
+                <td>{entretien.prenom}</td>
+                <td>
+                  {entretien.created_at
+                    ? new Date(entretien.created_at).toLocaleDateString("fr-FR")
+                    : ""}
                 </td>
                 <td className="d-flex gap-2">
                   <button
@@ -217,9 +208,7 @@ const ListEntretiens = () => {
                   </button>
                   <button
                     className="btn btn-primary"
-                    onClick={() =>
-                      navigate(`/edit-entretien/${entretien.id}`)
-                    }
+                    onClick={() => navigate(`/edit-entretien/${entretien.id}`)}
                   >
                     Modifier
                   </button>
