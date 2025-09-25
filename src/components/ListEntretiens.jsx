@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -7,9 +6,10 @@ import { useNavigate } from "react-router-dom";
 const normalizeDomain = (str) => {
   if (!str) return "";
   return str
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // supprime accents
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // supprime accents
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ") // remplace tout non-alphanum par espace
+    .replace(/[^a-z0-9]+/g, " ")
     .trim();
 };
 
@@ -33,16 +33,19 @@ const ListEntretiens = () => {
 
   const navigate = useNavigate();
 
-  // --- Récupération des entretiens et domaines ---
+  // --- Récupération des entretiens et domaines depuis API ---
   useEffect(() => {
     axios
       .get("http://entretiens.defarsci.fr/api/entretiens")
       .then((res) => {
-        const liste = Array.isArray(res.data) ? res.data : res.data.entretiens;
+        // Vérifie la structure de la réponse
+        const liste = Array.isArray(res.data)
+          ? res.data
+          : res.data.entretiens || [];
         setEntretiens(liste);
         setFiltered(liste);
 
-        // supprimer doublons de domaine
+        // Crée la liste unique de domaines
         const domainMap = new Map();
         liste.forEach((e) => {
           if (e.domaine) {
@@ -60,7 +63,9 @@ const ListEntretiens = () => {
           }))
         );
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error("Erreur récupération entretiens :", err);
+      });
   }, []);
 
   // --- Application des filtres ---
@@ -81,14 +86,16 @@ const ListEntretiens = () => {
             : e.maladie_ou_allergie === false;
         }
         return (
-          e.maladie_ou_allergie?.toLowerCase() === filters.maladie.toLowerCase()
+          e.maladie_ou_allergie?.toLowerCase() ===
+          filters.maladie.toLowerCase()
         );
       });
     }
 
     if (filters.dateEntretien) {
       data = data.filter(
-        (e) => e.created_at?.slice(0, 10) === filters.dateEntretien
+        (e) =>
+          e.created_at?.slice(0, 10) === filters.dateEntretien
       );
     }
 
@@ -109,11 +116,12 @@ const ListEntretiens = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-2" style={{paddingTop:"70px"}}>Liste des Entretiens</h2>
+      <h2 className="mb-2" style={{ paddingTop: "70px" }}>
+        Liste des Entretiens
+      </h2>
 
       {/* Filtres */}
       <div className="d-flex flex-nowrap align-items-center gap-3 p-3 bg-light rounded shadow-sm mb-4 overflow-auto">
-        {/* Domaine */}
         <select
           className="form-select"
           style={{ minWidth: "150px" }}
@@ -130,7 +138,6 @@ const ListEntretiens = () => {
           ))}
         </select>
 
-        {/* Maladie */}
         <select
           className="form-select"
           style={{ minWidth: "120px" }}
@@ -144,7 +151,6 @@ const ListEntretiens = () => {
           <option value="non">Non</option>
         </select>
 
-        {/* Date */}
         <input
           type="date"
           className="form-control"
@@ -155,7 +161,6 @@ const ListEntretiens = () => {
           }
         />
 
-        {/* Prénom */}
         <input
           type="text"
           className="form-control"
@@ -167,7 +172,6 @@ const ListEntretiens = () => {
           }
         />
 
-        {/* Nom */}
         <input
           type="text"
           className="form-control"
@@ -202,11 +206,7 @@ const ListEntretiens = () => {
                   {entretien.created_at
                     ? new Date(entretien.created_at).toLocaleDateString(
                         "fr-FR",
-                        {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                        }
+                        { day: "2-digit", month: "2-digit", year: "numeric" }
                       )
                     : ""}
                 </td>

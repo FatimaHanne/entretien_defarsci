@@ -17,7 +17,7 @@ const Navbar = () => {
       <div className="container">
         <div className="d-flex flex-column align-items-center me-3">
           <img
-            src="public/images/images-removebg-preview.png"
+            src="images/images-removebg-preview.png"
             alt="logo"
             style={{ height: "70px", width: "70px" }}
           />

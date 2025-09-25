@@ -11,7 +11,14 @@ const ModernInput = ({ label, name, value, onChange, placeholder, type = "textar
           {Icon && <Icon className="me-2" />}
           {label}
         </label>
-        <input type={type} name={name} value={value} onChange={onChange} placeholder={placeholder} className="form-control" />
+        <input
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className="form-control"
+        />
       </div>
     );
   }
@@ -21,7 +28,14 @@ const ModernInput = ({ label, name, value, onChange, placeholder, type = "textar
         {Icon && <Icon className="me-2" />}
         {label}
       </label>
-      <textarea name={name} value={value} onChange={onChange} rows={rows} placeholder={placeholder} className="form-control" />
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        rows={rows}
+        placeholder={placeholder}
+        className="form-control"
+      />
     </div>
   );
 };
@@ -33,7 +47,7 @@ const FormSection = ({ title, subtitle, icon: Icon, children, color = "primary" 
     danger: "bg-danger text-white",
     warning: "bg-warning text-dark",
     info: "bg-info text-white",
-    secondary: "bg-secondary text-white"
+    secondary: "bg-secondary text-white",
   };
 
   return (
@@ -70,26 +84,24 @@ const AddEntretien = () => {
 
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSave = async (statusType) => {
-    // Vérification pour "Valider"
+    const requiredFields = [
+      "prenom",
+      "nom",
+      "adresse",
+      "domaine",
+      "pourquoiChoix",
+      "participants",
+      "presentationBref",
+    ];
+
     if (statusType === "complete") {
-      const requiredFields = [
-        "prenom",
-        "nom",
-        "adresse",
-        "domaine",
-        "pourquoiChoix",
-        "participants",
-        "presentationBref",
-      ];
-
       const emptyFields = requiredFields.filter((field) => !formData[field]?.trim());
-
       if (emptyFields.length > 0) {
         setToast({
           show: true,
@@ -97,21 +109,21 @@ const AddEntretien = () => {
           type: "danger",
         });
         setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
-        return; // Ne rien enregistrer
+        return;
       }
     }
 
     try {
       if (statusType === "draft") {
-        await axios.post("http://localhost:5000/brouillons", formData);
+        await axios.post("http://entretiens.defarsci.fr/api/brouillons", formData);
         setToast({ show: true, message: "Brouillon enregistré", type: "warning" });
       } else {
-        await axios.post("http://localhost:5000/entretiens", { ...formData, dateEntretien: new Date().toISOString() });
+        await axios.post("http://entretiens.defarsci.fr/api/entretiens", {
+          ...formData,
+          dateEntretien: new Date().toISOString(),
+        });
         setToast({ show: true, message: "Entretien enregistré", type: "success" });
-      }
-
-      // Réinitialisation du formulaire uniquement après enregistrement
-      if (statusType === "complete") {
+        // Réinitialisation du formulaire après enregistrement complet
         setFormData({
           prenom: "",
           nom: "",
@@ -125,7 +137,6 @@ const AddEntretien = () => {
           quAttendezDeDefarSci: "",
           atouts: "",
           faiblesses: "",
-          dateEntretien: "",
         });
       }
 
@@ -136,7 +147,6 @@ const AddEntretien = () => {
       setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
     }
   };
-
 
   return (
     <div className="bg-light min-vh-100 py-5">
@@ -211,7 +221,9 @@ const AddEntretien = () => {
             <button onClick={() => handleSave("draft")} className="btn btn-secondary d-flex align-items-center gap-1">
               <Save className="w-4 h-4" /> Brouillon
             </button>
-            <button onClick={() => handleSave("complete")} className="btn btn-primary">Valider l'entretien</button>
+            <button onClick={() => handleSave("complete")} className="btn btn-primary">
+              Valider l'entretien
+            </button>
           </div>
         </div>
       </div>
