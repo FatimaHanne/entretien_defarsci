@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 // --- Helpers ---
-const normalizeDomain = (str) => {
+  const normalizeDomain = (str) => {
   if (!str) return "";
   return str
     .normalize("NFD")
@@ -30,6 +30,19 @@ const ListEntretiens = () => {
     nom: "",
     prenom: "",
   });
+const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 20;
+
+const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+// Découpe des entretiens affichés
+const indexOfLastItem = currentPage * itemsPerPage;
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+const currentItems = filtered.slice(indexOfFirstItem, indexOfLastItem);
+
+// Tableau des pages [1,2,3,...]
+const pageNumbers = [...Array(totalPages).keys()].map((n) => n + 1);
+
 
   const navigate = useNavigate();
 
@@ -188,8 +201,8 @@ const ListEntretiens = () => {
           </tr>
         </thead>
         <tbody>
-          {filtered.length > 0 ? (
-            filtered.map((entretien) => (
+          {currentItems.length > 0 ? (
+             currentItems.map((entretien) => (
               <tr key={entretien.id}>
                 <td>{entretien.id}</td>
                 <td>{entretien.nom}</td>
@@ -224,8 +237,32 @@ const ListEntretiens = () => {
           )}
         </tbody>
       </table>
-    </div>
-  );
-};
+
+      {/* Pagination */}
+        <div className="d-flex justify-content-center align-items-center mt-3 gap-2">
+          <button
+            className="btn btn-dark"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            ◀ Précédent
+          </button>
+
+          <span>
+            Page {currentPage} / {totalPages}
+          </span>
+
+          <button
+            className="btn btn-dark"
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            Suivant ▶
+          </button>
+        </div>
+
+            </div>
+          );
+        };
 
 export default ListEntretiens;

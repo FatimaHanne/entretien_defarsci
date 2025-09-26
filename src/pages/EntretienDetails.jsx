@@ -1,90 +1,108 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import jsPDF from "jspdf";
 
 const EntretienDetails = () => {
   const { id } = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
-
-  const [entretien, setEntretien] = useState(location.state || null);
+  const [entretien, setEntretien] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!entretien) {
-      axios
-        .get("http://entretiens.defarsci.fr/api/entretiens")
-        .then((res) => {
-          const liste = Array.isArray(res.data) ? res.data : res.data.entretiens;
-          const found = liste.find((e) => e.id === parseInt(id));
-          setEntretien(found || null);
-        })
-        .catch((err) => console.error(err));
-    }
-  }, [entretien, id]);
+    // --- Récupération d'un entretien par ID via HTTPS ---
+    axios
+      .get(`https://entretiens.defarsci.fr/api/entretiens/${id}`)
+      .then((res) => {
+        setEntretien(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, [id]);
 
- const handleDownloadPDF = () => {
-  if (!entretien) return;
-  const doc = new jsPDF();
-  const pageWidth = doc.internal.pageSize.getWidth();
+  // --- Téléchargement PDF ---
+  const handleDownloadPDF = () => {
+    if (!entretien) return;
 
-  doc.setFontSize(16);
-  doc.setTextColor(65, 83, 121); // couleur titre similaire header
-  doc.text(`Entretien de ${entretien.nom} ${entretien.prenom}`, pageWidth / 2, 20, { align: "center" });
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
 
-  let y = 30;
-  const cardHeight = 15;
-  const cardSpacing = 10;
-  const leftMargin = 20;
-  const rightMargin = 20;
-  const cardWidth = pageWidth - leftMargin - rightMargin;
+    doc.setFontSize(16);
+    doc.setTextColor(65, 83, 121);
+    doc.text(
+      `Entretien de ${entretien.nom} ${entretien.prenom}`,
+      pageWidth / 2,
+      20,
+      { align: "center" }
+    );
 
-  Object.entries(entretien)
-    .filter(([key]) => key !== "updated_at")
-    .forEach(([key, value]) => {
-      // Card background
-      doc.setFillColor(245, 245, 245); // couleur fond similaire
-      doc.roundedRect(leftMargin, y, cardWidth, cardHeight, 2, 2, "F");
+    let y = 30;
+    const cardHeight = 15;
+    const cardSpacing = 10;
+    const leftMargin = 20;
+    const rightMargin = 20;
+    const cardWidth = pageWidth - leftMargin - rightMargin;
 
-      // Card header
-      doc.setFillColor(65, 83, 121); // bleu header
-      doc.rect(leftMargin, y, cardWidth, 6, "F");
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(10);
-      doc.text(key.replace(/_/g, " "), leftMargin + 2, y + 4);
+    Object.entries(entretien)
+      .filter(([key]) => key !== "updated_at")
+      .forEach(([key, value]) => {
+        doc.setFillColor(245, 245, 245);
+        doc.roundedRect(leftMargin, y, cardWidth, cardHeight, 2, 2, "F");
 
-      // Card body
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(10);
-      doc.text(value?.toString() || "", leftMargin + 2, y + 12);
+        doc.setFillColor(65, 83, 121);
+        doc.rect(leftMargin, y, cardWidth, 6, "F");
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(10);
+        doc.text(key.replace(/_/g, " "), leftMargin + 2, y + 4);
 
-      y += cardHeight + cardSpacing;
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(10);
+        doc.text(value?.toString() || "", leftMargin + 2, y + 12);
 
-      // Nouvelle page si trop bas
-      if (y > 270) {
-        doc.addPage();
-        y = 20;
-      }
-    });
+        y += cardHeight + cardSpacing;
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
+      });
 
-  doc.save(`entretien_${entretien.id}.pdf`);
-};
+    doc.save(`entretien_${entretien.id}.pdf`);
+  };
 
-  if (!entretien) return <div className="container mt-5">Chargement...</div>;
+  if (loading)
+    return (
+      <div className="container mt-5">
+        <h3>Chargement...</h3>
+      </div>
+    );
+
+  if (!entretien)
+    return (
+      <div className="container mt-5">
+        <h3>Aucun entretien trouvé</h3>
+        <button className="btn btn-secondary mt-2" onClick={() => navigate(-1)}>
+          Retour
+        </button>
+      </div>
+    );
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-2 fs-2 fw-bold text-dark" style={{paddingTop:"50px"}}>
+      <h2 className="mb-2 fs-2 fw-bold text-dark" style={{ paddingTop: "50px" }}>
         Entretien de {entretien.nom} {entretien.prenom}
       </h2>
+
       <div className="row g-3 mt-3">
         {Object.entries(entretien)
-          .filter(([key]) => key !== "updated_at") // ❌ enlève updated_at
+          .filter(([key]) => key !== "updated_at")
           .map(([key, value]) => (
             <div key={key} className="col-md-4">
               <div
                 className="card h-100 shadow-sm border-0"
-                style={{ backgroundColor: "#fdfdfd", borderRadius: "10px"}}
+                style={{ backgroundColor: "#fdfdfd", borderRadius: "10px" }}
               >
                 <div
                   className="card-header"
@@ -98,14 +116,13 @@ const EntretienDetails = () => {
                 >
                   {key.replace(/_/g, " ")}
                 </div>
-                <div className="card-body" style={{ color: "black",fontWeight:"bold"}}>
+                <div className="card-body" style={{ color: "black", fontWeight: "bold" }}>
                   {value?.toString()}
                 </div>
               </div>
             </div>
           ))}
       </div>
-
 
       <div className="mt-4 d-flex gap-2 flex-wrap">
         <button
@@ -124,7 +141,11 @@ const EntretienDetails = () => {
         </button>
         <button
           className="btn"
-          style={{ backgroundColor: "#f8f9fa", color: "#212529", border: "1px solid #ced4da" }}
+          style={{
+            backgroundColor: "#f8f9fa",
+            color: "#212529",
+            border: "1px solid #ced4da",
+          }}
           onClick={() => navigate(-1)}
         >
           Retour à la liste
