@@ -1,8 +1,20 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { User, MapPin, GraduationCap, Heart, Users, Eye, Target, Zap, AlertTriangle, Save } from "lucide-react";
 import { Toast, ToastContainer } from "react-bootstrap";
+import {
+  Person,
+  GeoAlt,
+  Book,
+  Heart,
+  People,
+  Eye,
+  Bullseye,
+  Lightning,
+  ExclamationTriangle,
+  Save,
+} from "react-bootstrap-icons";
 
+// Composant pour les inputs modernes
 const ModernInput = ({ label, name, value, onChange, placeholder, type = "textarea", rows = 3, icon: Icon }) => {
   if (type === "text" || type === "date") {
     return (
@@ -40,6 +52,7 @@ const ModernInput = ({ label, name, value, onChange, placeholder, type = "textar
   );
 };
 
+// Composant pour les sections de formulaire
 const FormSection = ({ title, subtitle, icon: Icon, children, color = "primary" }) => {
   const colors = {
     primary: "bg-primary text-white",
@@ -123,7 +136,6 @@ const AddEntretien = () => {
           dateEntretien: new Date().toISOString(),
         });
         setToast({ show: true, message: "Entretien enregistré", type: "success" });
-        // Réinitialisation du formulaire après enregistrement complet
         setFormData({
           prenom: "",
           nom: "",
@@ -139,7 +151,6 @@ const AddEntretien = () => {
           faiblesses: "",
         });
       }
-
       setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
     } catch (err) {
       console.error("Erreur :", err);
@@ -174,25 +185,25 @@ const AddEntretien = () => {
 
           <div className="row">
             <div className="col-lg-8">
-              <FormSection title="Profil candidat" subtitle="Informations de base" icon={User} color="primary">
+              <FormSection title="Profil candidat" subtitle="Informations de base" icon={Person} color="primary">
                 <div className="row">
                   <div className="col-md-6">
-                    <ModernInput label="Prénom" name="prenom" value={formData.prenom} onChange={handleChange} placeholder="Prénom du candidat" type="text" icon={User} />
+                    <ModernInput label="Prénom" name="prenom" value={formData.prenom} onChange={handleChange} placeholder="Prénom du candidat" type="text" icon={Person} />
                   </div>
                   <div className="col-md-6">
-                    <ModernInput label="Nom" name="nom" value={formData.nom} onChange={handleChange} placeholder="Nom de famille" type="text" icon={User} />
+                    <ModernInput label="Nom" name="nom" value={formData.nom} onChange={handleChange} placeholder="Nom de famille" type="text" icon={Person} />
                   </div>
                 </div>
-                <ModernInput label="Adresse" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse complète" type="text" icon={MapPin} />
+                <ModernInput label="Adresse" name="adresse" value={formData.adresse} onChange={handleChange} placeholder="Adresse complète" type="text" icon={GeoAlt} />
               </FormSection>
 
-              <FormSection title="Orientation académique" subtitle="Choix et motivation" icon={GraduationCap} color="success">
-                <ModernInput label="Domaine choisi" name="domaine" value={formData.domaine} onChange={handleChange} placeholder="Ex: Informatique" rows={1} icon={GraduationCap} />
+              <FormSection title="Orientation académique" subtitle="Choix et motivation" icon={Book} color="success">
+                <ModernInput label="Domaine choisi" name="domaine" value={formData.domaine} onChange={handleChange} placeholder="Ex: Informatique" rows={1} icon={Book} />
                 <ModernInput label="Motivation" name="pourquoiChoix" value={formData.pourquoiChoix} onChange={handleChange} placeholder="Pourquoi ce domaine ?" rows={4} icon={Heart} />
               </FormSection>
 
-              <FormSection title="Présentation candidat" subtitle="Profil et parcours" icon={Users} color="danger">
-                <ModernInput label="Équipe d'évaluation" name="participants" value={formData.participants} onChange={handleChange} placeholder="Responsables de l'entretien" rows={2} icon={Users} />
+              <FormSection title="Présentation candidat" subtitle="Profil et parcours" icon={People} color="danger">
+                <ModernInput label="Équipe d'évaluation" name="participants" value={formData.participants} onChange={handleChange} placeholder="Responsables de l'entretien" rows={2} icon={People} />
                 <div className="row">
                   <div className="col-md-6">
                     <ModernInput label="Résumé express" name="presentationBref" value={formData.presentationBref} onChange={handleChange} placeholder="Présentation en une phrase" rows={3} />
@@ -207,12 +218,12 @@ const AddEntretien = () => {
             <div className="col-lg-4">
               <FormSection title="Vision & attentes" subtitle="Perspective du candidat" icon={Eye} color="warning">
                 <ModernInput label="Vision DEFAR SCI" name="commentVoyezDefarSci" value={formData.commentVoyezDefarSci} onChange={handleChange} placeholder="Comment voyez-vous l'école ?" rows={4} icon={Eye} />
-                <ModernInput label="Attentes" name="quAttendezDeDefarSci" value={formData.quAttendezDeDefarSci} onChange={handleChange} placeholder="Que souhaitez-vous accomplir ?" rows={4} icon={Target} />
+                <ModernInput label="Attentes" name="quAttendezDeDefarSci" value={formData.quAttendezDeDefarSci} onChange={handleChange} placeholder="Que souhaitez-vous accomplir ?" rows={4} icon={Bullseye} />
               </FormSection>
 
-              <FormSection title="Évaluation" subtitle="Forces et développement" icon={Zap} color="info">
-                <ModernInput label="Points forts" name="atouts" value={formData.atouts} onChange={handleChange} placeholder="Compétences et atouts principaux" rows={4} icon={Zap} />
-                <ModernInput label="Axes d'amélioration" name="faiblesses" value={formData.faiblesses} onChange={handleChange} placeholder="Domaines à développer" rows={4} icon={AlertTriangle} />
+              <FormSection title="Évaluation" subtitle="Forces et développement" icon={Lightning} color="info">
+                <ModernInput label="Points forts" name="atouts" value={formData.atouts} onChange={handleChange} placeholder="Compétences et atouts principaux" rows={4} icon={Lightning} />
+                <ModernInput label="Axes d'amélioration" name="faiblesses" value={formData.faiblesses} onChange={handleChange} placeholder="Domaines à développer" rows={4} icon={ExclamationTriangle} />
               </FormSection>
             </div>
           </div>

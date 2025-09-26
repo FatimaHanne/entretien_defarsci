@@ -9,19 +9,30 @@ const EntretienDetails = () => {
   const [entretien, setEntretien] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // --- Récupération d'un entretien par ID via HTTPS ---
-    axios
-      .get(`https://entretiens.defarsci.fr/api/entretiens/${id}`)
-      .then((res) => {
-        setEntretien(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, [id]);
+useEffect(() => {
+  axios
+    .get(`https://entretiens.defarsci.fr/api/entretiens/${id}`)
+    .then((res) => {
+      console.log("Réponse API détail:", res.data);
+
+      // Normalisation de la donnée
+      let data = res.data;
+      if (data.entretien) {
+        data = data.entretien; // cas { entretien: {...} }
+      }
+      if (Array.isArray(data)) {
+        data = data[0]; // cas [ {...} ]
+      }
+
+      setEntretien(data || null);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("Erreur API:", err);
+      setLoading(false);
+    });
+}, [id]);
+
 
   // --- Téléchargement PDF ---
   const handleDownloadPDF = () => {
@@ -91,7 +102,7 @@ const EntretienDetails = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-2 fs-2 fw-bold text-dark" style={{ paddingTop: "50px" }}>
+      <h2 className="mt-5 fs-2 fw-bold text-dark" style={{ paddingTop: "90px" }}>
         Entretien de {entretien.nom} {entretien.prenom}
       </h2>
 

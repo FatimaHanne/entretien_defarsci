@@ -1,5 +1,5 @@
 import React from "react";
-import { Users, Calendar, FileText} from "lucide-react";
+import "bootstrap-icons/font/bootstrap-icons.css"; // Import obligatoire pour utiliser les icônes
 
 const Dashboard = () => {
   return (
@@ -10,16 +10,18 @@ const Dashboard = () => {
       }}
     >
       {/* Header */}
-    <header className="bg-white border-bottom shadow-sm py-3" style={{ marginTop: "90px" }}>
-  <div className="container d-flex justify-content-between align-items-center">
-    <div>
-      <h1 className="text-muted fw-bold">
-        Bienvenue, gérez vos entretiens et employés
-      </h1>
-    </div>
-  </div>
-</header>
-
+      <header
+        className="bg-white border-bottom shadow-sm py-3"
+        style={{ marginTop: "90px" }}
+      >
+        <div className="container d-flex justify-content-between align-items-center">
+          <div>
+            <h1 className="text-muted fw-bold">
+              Bienvenue, gérez vos entretiens et employés
+            </h1>
+          </div>
+        </div>
+      </header>
 
       {/* Main */}
       <main className="container flex-grow-1 d-flex flex-column justify-content-center">
@@ -29,9 +31,8 @@ const Dashboard = () => {
             <div className="card shadow-lg border-0 h-100">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <div className="bg-primary text-white p-3 
-                  ">
-                    <Calendar size={24} />
+                  <div className="bg-primary text-white p-3 rounded">
+                    <i className="bi bi-calendar"></i>
                   </div>
                   <span className="badge bg-primary text-white fw-bold">
                     +5000 entretiens
@@ -48,7 +49,7 @@ const Dashboard = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <div className="bg-success text-white p-3 rounded">
-                    <Users size={24} />
+                    <i className="bi bi-people"></i>
                   </div>
                   <span className="badge bg-success-subtle text-success fw-bold">
                     +1000 employés
@@ -65,7 +66,7 @@ const Dashboard = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <div className="bg-danger text-white p-3 rounded">
-                    <Calendar size={24} />
+                    <i className="bi bi-calendar-week"></i>
                   </div>
                   <span className="badge bg-danger-subtle text-danger fw-bold">
                     Cette semaine
@@ -87,19 +88,19 @@ const Dashboard = () => {
             <div className="row g-4 text-center">
               <div className="col-md-4">
                 <button className="btn btn-primary w-100 py-4 shadow-sm">
-                  <Calendar className="mb-2" />
+                  <i className="bi bi-calendar2-plus mb-2"></i>
                   <div>Planifier un entretien</div>
                 </button>
               </div>
               <div className="col-md-4">
                 <button className="btn btn-success w-100 py-4 shadow-sm">
-                  <Users className="mb-2" />
+                  <i className="bi bi-person-plus mb-2"></i>
                   <div>Ajouter un employé</div>
                 </button>
               </div>
               <div className="col-md-4">
                 <button className="btn btn-dark w-100 py-4 shadow-sm">
-                  <FileText className="mb-2" />
+                  <i className="bi bi-file-earmark-text mb-2"></i>
                   <div>Générer un rapport</div>
                 </button>
               </div>
